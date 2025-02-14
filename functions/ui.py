@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QLineEdit, QListWidget
 from PyQt6.QtCore import QTimer, QTime
 import pyautogui
-from .utils import show_error  # Import show_error dari utils
+from .utils import show_error 
 
 class AutoClickTimer(QWidget):
     def __init__(self):
@@ -73,21 +73,22 @@ class AutoClickTimer(QWidget):
                 if 0 <= minute <= 9:
                     minute_str = f"X{minute}"
                 else:
-                    show_error(self, "Masukkan angka 0-9 untuk menit atau 'XX'!")
+                    self.show_error("Masukkan angka 0-9 untuk menit atau 'XX'!")
                     return
-
+                
             if 0 <= second <= 9:
                 second_str = f"X{second}"
             else:
-                show_error(self, "Masukkan angka 0-9 untuk detik!")
+                self.show_error("Masukkan angka 0-9 untuk detik!")
                 return
 
             self.list_widget.addItem(f"{minute_str}:{second_str}")
             self.minute_input.clear()
             self.second_input.clear()
         except ValueError:
-            show_error(self, "Masukkan angka yang valid!")
+            self.show_error("Masukkan angka yang valid!")
 
+    
     def check_click(self, current_minute, current_second):
         for index in range(self.list_widget.count()):
             time_str = self.list_widget.item(index).text()
@@ -109,11 +110,11 @@ class AutoClickTimer(QWidget):
                 if (stored_minute is None or (current_minute % 10) == stored_minute) and current_second == stored_second:
                     current_time = QTime.currentTime().toString("HH:mm:ss")
                     log_message = f"[{current_time}] Click executed!"
-
-                    print(log_message)
-                    self.console_log.addItem(log_message)
-                    self.console_log.scrollToBottom()
+                    
+                    print(log_message)  # Debugging
+                    self.console_log.addItem(log_message) 
+                    self.console_log.scrollToBottom()  
                     pyautogui.click()
                     break
             except ValueError:
-                continue
+                continue 
